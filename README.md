@@ -1,10 +1,10 @@
 # time
 
-[![package: stdlib](https://img.shields.io/badge/package-stdlib-f4f4f5?style=flat-square&labelColor=e4e4e7&color=18181b)](https://github.com/vertex-language)
+[![package: vs-package](https://img.shields.io/badge/package-vs--package-f4f4f5?style=flat-square&labelColor=e4e4e7&color=18181b)](https://github.com/vertex-language)
 [![time: duration | timestamp | instant](https://img.shields.io/badge/time-duration%20%7C%20timestamp%20%7C%20instant-f4f4f5?style=flat-square&labelColor=e4e4e7&color=18181b)](https://github.com/vertex-language/time)
 [![runtime: async](https://img.shields.io/badge/runtime-async-f4f4f5?style=flat-square&labelColor=e4e4e7&color=18181b)](https://github.com/vertex-language)
 
-Standard time library for the Vertex programming language, providing lengths of time, moments on the wall and monotonic clocks, and sleeping in both blocking and asynchronous forms.
+Time library providing durations, wall and monotonic clocks, and blocking and asynchronous timers.
 
 ---
 
@@ -15,6 +15,12 @@ Standard time library for the Vertex programming language, providing lengths of 
 ---
 
 ## Quick Start
+
+Run any entry point with:
+
+```bash
+vsc run main.vs
+```
 
 ```swift
 package main
