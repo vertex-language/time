@@ -69,11 +69,15 @@ Calendars, time zones and timestamp formatting beyond `description` are not here
 ## Layout
 
 ```
-time          Vertex: Duration, Timestamp, Instant, Sleep, TimeError
-  cclock/     C: the wall clock, the monotonic clock, a thread sleep
+time/                 import "time": Duration, Timestamp, Instant, Sleep, TimeError
+  clock.cpp           export module time; the wall clock, the monotonic clock, a thread sleep
+  clock_posix.cpp     Darwin (clock_gettime, CLOCK_UPTIME_RAW, nanosleep) and Linux (CLOCK_MONOTONIC)
+  clock_windows.cpp   GetSystemTimePreciseAsFileTime, QueryPerformanceCounter, Sleep (written, not yet built)
+  cmd/check           the test program
+  cmd/stopwatch       an example
 ```
 
-`cclock` is three functions, built from `package.vs` on Darwin (`clock_gettime`, `CLOCK_UPTIME_RAW`, `nanosleep`), Linux (`CLOCK_MONOTONIC`) and Windows (`GetSystemTimePreciseAsFileTime`, `QueryPerformanceCounter`, `Sleep`; written, not yet built).
+The C++ module's three exports are internal to the package: the `.vs` files call them, and importers see only the Vertex types.
 
 ---
 

@@ -1,20 +1,5 @@
 package time
 
-// The cclock target's C ABI (cclock/include/cclock.h).
-//
-// Written out by symbol, as net/tcp's are, because cclock_wall takes a
-// pointer. Nothing here is public: the package's surface is the Vertex
-// types over it.
-
-@_silgen_name("cclock_wall")
-func cclock_wall(_ nanos: UnsafeMutablePointer<int32>) -> int64
-
-@_silgen_name("cclock_monotonic")
-func cclock_monotonic() -> int64
-
-@_silgen_name("cclock_sleep")
-func cclock_sleep(_ nanoseconds: int64)
-
 // Nanoseconds in each unit, as the int64 every count here is.
 let nanosPerMicrosecond: int64 = 1_000
 let nanosPerMillisecond: int64 = 1_000_000

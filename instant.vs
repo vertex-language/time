@@ -20,7 +20,7 @@ public struct Instant: Hashable, Comparable {
 
     /// Now, on the monotonic clock.
     public static func Now() -> Instant {
-        return Instant(nanos: cclock_monotonic())
+        return Instant(nanos: monotonicClock())
     }
 
     /// How long ago this was.

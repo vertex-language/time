@@ -17,7 +17,7 @@ package time
 
 /// Stops the thread for at least `duration`. Zero or less returns at once.
 public func Sleep(_ duration: Duration) {
-    cclock_sleep(duration.nanos)
+    sleepThread(duration.nanos)
 }
 
 /// Suspends the task for at least `duration`, and every other task runs
@@ -32,7 +32,7 @@ public func Sleep(_ duration: Duration) async throws {
 
 /// Stops the thread until at least `deadline`.
 public func Sleep(until deadline: Instant) {
-    cclock_sleep((deadline - Instant.Now()).nanos)
+    sleepThread((deadline - Instant.Now()).nanos)
 }
 
 /// Suspends the task until at least `deadline`.

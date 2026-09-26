@@ -34,7 +34,7 @@ public struct Timestamp: Hashable, Comparable, CustomStringConvertible {
     /// Now, on the wall clock.
     public static func Now() -> Timestamp {
         var nanos: int32 = 0
-        let secs = cclock_wall(&nanos)
+        let secs = wallClock(&nanos)
         return Timestamp(unixSeconds: secs, nanoseconds: int64(nanos))
     }
 
