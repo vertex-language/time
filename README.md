@@ -16,10 +16,14 @@ Time library providing durations, wall and monotonic clocks, and blocking and as
 
 ## Quick Start
 
-Run any entry point with:
+Run tools and test suites in `cmd/` directly with `vsc run`:
 
 ```bash
-vsc run main.vs
+# Run all checks
+vsc run check
+
+# Time a few sleeps, blocking and asynchronous
+vsc run stopwatch
 ```
 
 ```swift
