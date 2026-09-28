@@ -1,5 +1,11 @@
 package time
 
+import "math"
+
+// Division here rounds toward negative infinity (math.FloorDiv and
+// FloorMod), so a time before 1970 still has its nanoseconds counted
+// forwards from the second before it: -0.5s is second -1 plus 500000000 ns.
+
 /// A moment on the wall clock: what a file's modification time is, and
 /// what a log line or a certificate's expiry is stamped with.
 ///
@@ -24,8 +30,8 @@ public struct Timestamp: Hashable, Comparable, CustomStringConvertible {
     /// the Unix epoch. Nanoseconds outside a second carry into the seconds,
     /// and may be negative.
     public init(unixSeconds: int64, nanoseconds: int64 = 0) {
-        UnixSeconds = unixSeconds + floorDiv(nanoseconds, nanosPerSecond)
-        Nanoseconds = int32(floorMod(nanoseconds, nanosPerSecond))
+        UnixSeconds = unixSeconds + math.FloorDiv(nanoseconds, nanosPerSecond)
+        Nanoseconds = int32(math.FloorMod(nanoseconds, nanosPerSecond))
     }
 
     /// 1970-01-01T00:00:00Z.
@@ -41,8 +47,8 @@ public struct Timestamp: Hashable, Comparable, CustomStringConvertible {
     /// The moment a count of milliseconds since the Unix epoch names, as
     /// JavaScript and Java keep time.
     public static func UnixMilliseconds(_ ms: int64) -> Timestamp {
-        return Timestamp(unixSeconds: floorDiv(ms, 1000),
-                         nanoseconds: floorMod(ms, 1000) * nanosPerMillisecond)
+        return Timestamp(unixSeconds: math.FloorDiv(ms, 1000),
+                         nanoseconds: math.FloorMod(ms, 1000) * nanosPerMillisecond)
     }
 
     /// A moment in UTC by its calendar date and clock time, in the
@@ -51,8 +57,8 @@ public struct Timestamp: Hashable, Comparable, CustomStringConvertible {
     public static func UTC(_ year: int64, _ month: int64, _ day: int64,
                            _ hour: int64 = 0, _ minute: int64 = 0, _ second: int64 = 0,
                            nanosecond: int64 = 0) -> Timestamp {
-        let y = year + floorDiv(month - 1, 12)
-        let m = floorMod(month - 1, 12) + 1
+        let y = year + math.FloorDiv(month - 1, 12)
+        let m = math.FloorMod(month - 1, 12) + 1
         let days = daysFromCivil(y, m, 1) + day - 1
         return Timestamp(unixSeconds: days * 86400 + hour * 3600 + minute * 60 + second,
                          nanoseconds: nanosecond)
@@ -90,8 +96,8 @@ public struct Timestamp: Hashable, Comparable, CustomStringConvertible {
     /// RFC 3339 in UTC: "2026-09-16T23:04:05Z", with the fraction of a
     /// second where there is one, its trailing zeros left off.
     public var description: string {
-        let days = floorDiv(UnixSeconds, 86400)
-        let secs = floorMod(UnixSeconds, 86400)
+        let days = math.FloorDiv(UnixSeconds, 86400)
+        let secs = math.FloorMod(UnixSeconds, 86400)
         let (y, m, d) = civilFromDays(days)
         var text = y < 0 ? "-" + padded(-y, 4) : padded(y, 4)
         text += "-" + padded(m, 2) + "-" + padded(d, 2)
@@ -107,7 +113,7 @@ public struct Timestamp: Hashable, Comparable, CustomStringConvertible {
 // day falls at its end, and years group into 400-year eras of 146097 days.
 func daysFromCivil(_ year: int64, _ month: int64, _ day: int64) -> int64 {
     let y = month <= 2 ? year - 1 : year
-    let era = floorDiv(y, 400)
+    let era = math.FloorDiv(y, 400)
     let yoe = y - era * 400
     let doy = (153 * (month > 2 ? month - 3 : month + 9) + 2) / 5 + day - 1
     let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy
@@ -116,7 +122,7 @@ func daysFromCivil(_ year: int64, _ month: int64, _ day: int64) -> int64 {
 
 func civilFromDays(_ days: int64) -> (int64, int64, int64) {
     let z = days + 719468
-    let era = floorDiv(z, 146097)
+    let era = math.FloorDiv(z, 146097)
     let doe = z - era * 146097
     let yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365
     let doy = doe - (365 * yoe + yoe / 4 - yoe / 100)
